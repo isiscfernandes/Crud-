@@ -1,0 +1,106 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style-register.css">
+    <title>Read, Write,Update,Delete Data Firebase JS</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="arrow">
+                <img src="img/arrow.svg" alt="arrow">
+            </div>
+
+        </div>
+    </header>
+    <main>
+        <h1>Register</h1>
+        <div class="container">
+            <form action="">
+                <input type="text" name="nameV" id="nameV" placeholder="Name">
+                <input type="mailbox" name="mailbox" id="mailbox" placeholder="E-mail">
+                <input type="passwordbox" name="passwordbox" id="passwordbox" placeholder="password">
+                <!-- <input type="button" value="next" name="next" id="button-register" class="button-register"> -->
+                <button id="insert" class="button-register">INSERT</button>
+                <button id="select" class="button-register">SELECT</button>
+                <button id="update" class="button-register">UPDATE</button>
+                <button id="delete" class="button-register">DELETE</button>
+            </form>
+        </div>
+    </main>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+
+    <script id="MainScript">
+
+        //**********************Configuration*************************************************************//
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyBZlNMUkdLOzqXZ_Q-xPJP9odjwLbzKDog",
+            authDomain: "fir-javas-16ece.firebaseapp.com",
+            databaseURL: "https://fir-javas-16ece.firebaseio.com",
+            projectId: "fir-javas-16ece",
+            storageBucket: "fir-javas-16ece.appspot.com",
+            messagingSenderId: "777230513820",
+            appId: "1:777230513820:web:9ceb8b94ed5586bc639f59"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        //**********************Ready Data*************************************************************//
+        var nameV, mailV, passwordV;
+
+        function Ready() {
+            nameV = document.getElementById('namebox').value;
+            mailV = document.getElementById('mailbox').value;
+            passwordV = document.getElementById('passwordbox').value;
+        }
+
+        //**********************Insert Process*************************************************************//
+        document.getElementById('insert').onclick = function () {
+            Ready();
+            firebase.database().ref('employee/' + nameV).set({
+                NameOfEmployee: nameV,
+                MailAdress: mailV,
+                Password: passwordV
+            });
+        }
+
+        //**********************Select Process*************************************************************//
+        document.getElementById('select').onclick = function () {
+            Ready();
+            firebase.database().ref('employee/' + nameV).on('value', function (snapshot) {
+                document.getElementById('namebox').value = snapshot.val().NameOfEmployee;
+                document.getElementById('mailbox').value = snapshot.val().MailAdress;
+                document.getElementById('passwordbox').value = snapshot.val().Password;
+
+            });
+
+        }
+
+        //**********************Update Process*************************************************************//
+        document.getElementById('update').onclick = function () {
+            Ready();
+            firebase.database().ref('employee/' + nameV).update({
+                NameOfEmployee: nameV,
+                MailAdress: mailV,
+                Password: passwordV
+            });
+        }
+
+        //**********************Delete Process***********************************************************//
+        document.getElementById('delete').onclick = function () {
+            Ready();
+            firebase.database().ref('employee/' + nameV).remove();
+        }
+
+
+    </script>
+</body>
+
+</html>
